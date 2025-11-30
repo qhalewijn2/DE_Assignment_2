@@ -30,7 +30,7 @@ if __name__ == "__main__":
     BOOTSTRAP_SERVERS = "35.202.186.2:9092"
 
     # 2) Path to the used-cars CSV on YOUR LAPTOP
-    CSV_PATH = r""C:\Users\User\Downloads\vehicles.csv\vehicles.csv""
+    CSV_PATH = r"C:\Users\User\Downloads\vehicles.csv\vehicles.csv"
 
     TOPIC = "used_cars_stream"
 
