@@ -11,11 +11,10 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=yes
     volumes:
-      # Explicit Bind Mounts for V3
-      - /home/${USER_HOME}/notebooks:/home/jovyan/notebooks 
+      - /home/${USER_HOME}/notebooks:/home/jovyan/notebooks
       - /home/${USER_HOME}/data:/home/jovyan/data
       - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
-  
+
   spark-master:
     build:
       context: ./apache-spark-python3.11
@@ -29,10 +28,9 @@ services:
       - "8080:8080"
       - "7077:7077"
     volumes:
-      # Explicit Bind Mounts for V3
       - /home/${USER_HOME}/data:/home/jovyan/data
       - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
-      
+
   spark-worker-1:
     build:
       context: ./apache-spark-python3.11
@@ -49,12 +47,9 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      # Explicit Bind Mounts for V3
       - /home/${USER_HOME}/data:/home/jovyan/data
       - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
-      
-  # spark-worker-2: This service was the cause of one error.
-  # Ensure the port mapping for the worker UI is unique (8082 -> 8081)
+
   spark-worker-2:
     build:
       context: ./apache-spark-python3.11
@@ -69,19 +64,18 @@ services:
       - SPARK_WORKER_CORES=1
       - SPARK_WORKER_WEBUI_PORT=8081
     ports:
-      - "8082:8081" # Worker 2 UI mapped to 8082 on host
+      - "8082:8081"
     volumes:
-      # Explicit Bind Mounts for V3
       - /home/${USER_HOME}/data:/home/jovyan/data
       - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
-      
+
   zookeeper:
     image: zookeeper:3.4.9
     hostname: zookeeper
     container_name: zookeeper
     ports:
       - "2181:2181"
-      
+
   kafka1:
     image: confluentinc/cp-kafka:5.2.5
     hostname: kafka1
@@ -97,6 +91,3 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
-
-# Note: The original top-level 'volumes' section with 'driver_opts' has been removed
-# because it caused syntax errors in the modern Docker Compose V3 parser.
