@@ -11,9 +11,9 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=yes
     volumes:
-      - /home/${USER_HOME}/notebooks:/home/jovyan/notebooks
-      - /home/${USER_HOME}/data:/home/jovyan/data
-      - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
+      - /home/q_d_vanhalewijn/notebooks:/home/jovyan/notebooks  # HARDCODED PATH
+      - /home/q_d_vanhalewijn/data:/home/jovyan/data           # HARDCODED PATH
+      - /home/q_d_vanhalewijn/checkpoint:/home/jovyan/checkpoint # HARDCODED PATH
 
   spark-master:
     build:
@@ -28,8 +28,8 @@ services:
       - "8080:8080"
       - "7077:7077"
     volumes:
-      - /home/${USER_HOME}/data:/home/jovyan/data
-      - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
+      - /home/q_d_vanhalewijn/data:/home/jovyan/data
+      - /home/q_d_vanhalewijn/checkpoint:/home/jovyan/checkpoint
 
   spark-worker-1:
     build:
@@ -47,8 +47,8 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - /home/${USER_HOME}/data:/home/jovyan/data
-      - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
+      - /home/q_d_vanhalewijn/data:/home/jovyan/data
+      - /home/q_d_vanhalewijn/checkpoint:/home/jovyan/checkpoint
 
   spark-worker-2:
     build:
@@ -66,8 +66,8 @@ services:
     ports:
       - "8082:8081"
     volumes:
-      - /home/${USER_HOME}/data:/home/jovyan/data
-      - /home/${USER_HOME}/checkpoint:/home/jovyan/checkpoint
+      - /home/q_d_vanhalewijn/data:/home/jovyan/data
+      - /home/q_d_vanhalewijn/checkpoint:/home/jovyan/checkpoint
 
   zookeeper:
     image: zookeeper:3.4.9
@@ -83,6 +83,7 @@ services:
     ports:
       - "9092:9092"
     environment:
+      # You still need to export EXTERNAL_IP for this line to work
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:9093,LISTENER_DOCKER_EXTERNAL://${EXTERNAL_IP}:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
